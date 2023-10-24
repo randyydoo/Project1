@@ -15,7 +15,7 @@ def timeSubtraction(time: float, duration: float) -> float:
     if time - duration < int(time):
         return (int(time) - 1) + (.60 - duration) + (remainder)
 
-    return time - duration
+    return round(time - duration, 2)
 
 # def getLatest(time: float, duration: float, ceiling: float) -> float:
 #     curr = time
@@ -78,9 +78,19 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
     # consider edge case of last activity end time and add to lists
     temp1.append([input1[-1][1], timeSubtraction(end, duration)])
     temp2.append([input2[-1][1], timeSubtraction(end, duration)])
-    print(temp1) 
+    
+    res = []
+    # store all used times
+    s = set()
+    for start1,end1 in temp1:
+        for start2,end2 in temp2:
+            if end1 >= start2 and end2 >= start1:
+                begin, stop = max(start1,start2), min(end1,end2)
+                res.append([begin,stop])
+                break
+    print(temp1)
     print(temp2)
+    print(res)
 
-     
+
 greedy([['16:00', '18:00'], ['7:00', '8:30'], ['12:00', '13:00']], ['9:00', '19:00'], [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']], ['9:00', '18:30'], 30)
-
