@@ -10,20 +10,6 @@ def timeAddition(time: float, duration: float) -> float:
 
     return time + duration
 
-def timeSubtraction(time: float, duration: float) -> float:
-    remainder = time - int(time)
-    if time - duration < int(time):
-        return (int(time) - 1) + (.60 - duration) + (remainder)
-
-    return round(time - duration, 2)
-
-# def getLatest(time: float, duration: float, ceiling: float) -> float:
-#     curr = time
-#     while 1:
-#         if timeAddition(curr, duration) >= ceiling:
-            # return curr
-
-        # curr = timeAddition(time, duration)
 
 def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[str,str]], act2: list[str, str], duration: int) -> list[list[str, str]]:
     # check if daily activties have an open interval
@@ -62,9 +48,10 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
         nxt_start1 = input1[i+1][0]
         # use max function to take care of intervals not being after agreed start time edge case
         prev_start1 = max(prev_start1, curr_end1)
-        # check if (start + duration) < nxt_start
-        if timeAddition(prev_start1, duration) < nxt_start1:
-            temp1.append([prev_start1, timeSubtraction(nxt_start1,duration)])
+        # check if (start + duration) < nxt_start -> if (nxt_start - duration) <= (prev_staart + duration) -> only 1 meeting allowed
+        shortest_meeting = timeAddition(prev_start1, duration)
+        if shortest_meeting <= nxt_start1:
+            temp1.append([prev_start1, nxt_start1])
 
     for i in range(len(input2)-1):
         curr_end2 = input2[i][1]
@@ -72,24 +59,27 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
         # use max function to take care of intervals not being after agreed start time edge case
         prev_start2 = max(prev_start2, curr_end2)
         # check if (start + duration) < nxt_start
-        if timeAddition(prev_start2, duration) < nxt_start2:
-            temp2.append([prev_start2, timeSubtraction(nxt_start2,duration)])
+        shortest_meeting = timeAddition(prev_start2, duration)
+        if shortest_meeting <= nxt_start2:
+            temp2.append([prev_start2, nxt_start2])
+
 
     # consider edge case of last activity end time and add to lists
-    temp1.append([input1[-1][1], timeSubtraction(end, duration)])
-    temp2.append([input2[-1][1], timeSubtraction(end, duration)])
-    
+    last_sched1, last_sched2 = input1[-1][1], input2[-1][1]
+    if timeAddition(last_sched1, duration) <= end:
+        temp1.append([last_sched1, end])
+
+    if timeAddition(last_sched2, duration) <= end:
+        temp2.append([last_sched2, end])
+
+    # check for overlaps
     res = []
-    # store all used times
-    s = set()
     for start1,end1 in temp1:
         for start2,end2 in temp2:
-            if end1 >= start2 and end2 >= start1:
+            if (start1 <= end2) and (end1 >= start2):
                 begin, stop = max(start1,start2), min(end1,end2)
                 res.append([begin,stop])
-                break
-    print(temp1)
-    print(temp2)
+
     print(res)
 
 
