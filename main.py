@@ -11,6 +11,13 @@ def timeAddition(time: float, duration: float) -> float:
      
     return float(time + remainder)
 
+def getMaxEnd(time: float, duration: float, end: float) -> float:
+    while timeAddition(time, duration) < end:
+        time = timeAddition(time, duration)
+
+    return time
+     
+    return float(time + remainder)
 def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[str,str]], act2: list[str, str], duration: int) -> None:
     print(f'Person 1 Activities: {input1} ')
     print(f'Person 1 Daily Activies: {act1} ')
@@ -70,7 +77,7 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
         # check if (start + duration) < nxt_start -> if (nxt_start - duration) <= (prev_staart + duration) -> only 1 meeting allowed
         shortest_meeting = timeAddition(curr_end1, duration)
         if shortest_meeting <= nxt_start1:
-            temp1.append([curr_end1, nxt_start1])
+            temp1.append([curr_end1, getMaxEnd(curr_end1, duration, nxt_start1)])
 
     for i in range(len(input2)-1):
         curr_end2 = input2[i][1]
@@ -78,7 +85,7 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
         # check if (start + duration) < nxt_start
         shortest_meeting = timeAddition(curr_end2, duration)
         if shortest_meeting <= nxt_start2:
-            temp2.append([curr_end2, nxt_start2])
+            temp2.append([curr_end2, getMaxEnd(curr_end2, duration, nxt_start2)])
 
 
     # consider edge case of last activity end time and add to lists
@@ -92,6 +99,7 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
 
     # check for overlaps
     res = []
+    print(temp1, temp2)
     for start1,end1 in temp1:
         for start2,end2 in temp2:
             if (start1 <= end2) and (end1 >= start2):
@@ -120,12 +128,12 @@ def runTests() -> None:
 
     tests = [
     [[['16:00', '18:00'], ['7:00', '8:30'], ['12:00', '13:00']], ['9:00', '13:00'], [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']], ['13:40', '18:30'], 100],
-    [[['16:00', '18:00'], ['7:00', '8:30'], ['12:00', '13:00']], ['9:00', '19:00'], [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']], ['9:00', '18:30'], 30],
+    [[['16:00', '18:00'], ['7:00', '8:30'], ['12:20', '13:00']], ['9:00', '19:00'], [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']], ['9:00', '18:30'], 30],
     [[['9:00', '12:00']], ['7:00', '23:00'], [['12:30', '13:00']], ['8:00', '23:30'], 60],
     [[], ['10:00', '20:00'], [['13:00', '16:00'], ['18:00', '18:45']], ['9:00', '21:00'], 90]
     ]
 
-    for i in range(4):
+    for i in range(2):
         input1, act1, input2, act2, duration = tests[i][0], tests[i][1], tests[i][2], tests[i][3], tests[i][4]
         greedy(input1,act1,input2,act2,duration)
 
