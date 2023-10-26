@@ -12,18 +12,19 @@ def timeAddition(time: float, duration: float) -> float:
     return float(time + remainder)
 
 def getMaxEnd(time: float, duration: float, end: float) -> float:
-    while timeAddition(time, duration) < end:
-        time = timeAddition(time, duration)
+    if timeAddition(time, duration) > end:
+        return time
 
-    return time
+    time = timeAddition(time, duration)
+    return getMaxEnd(time, duration, end)
      
     return float(time + remainder)
 def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[str,str]], act2: list[str, str], duration: int) -> None:
     print(f'Person 1 Activities: {input1} ')
-    print(f'Person 1 Daily Activies: {act1} ')
     print(f'Person 2 Activities: {input2} ')
-    print(f'Person 2 Daily Activies: {act2}')
-    print(f'Duration: {duration}')
+    print(f'Person 1 Daily Activities: {act1} ')
+    print(f'Person 2 Daily Activities: {act2}')
+    print(f'Duration: {duration} minutes')
 
     # check if daily activties have an open interval
     act1[0], act1[1] = toFloat(act1[0]), toFloat(act1[1])
@@ -96,16 +97,27 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
     if input2 and timeAddition(input2[-1][1], duration) <= end:
         last_sched2 = timeAddition(input2[-1][1], duration)
         temp2.append([input2[-1][1], end])
+    
+    # join and sort both lists containing avaliable slots for both individuals
+    joined = temp1 + temp2
+    joined = sorted(joined, key=lambda x: x[1])
 
     # check for overlaps
-    res = []
-    print(temp1, temp2)
-    for start1,end1 in temp1:
-        for start2,end2 in temp2:
-            if (start1 <= end2) and (end1 >= start2):
-                begin, stop = max(start1,start2), min(end1,end2)
-                if stop - begin >= duration: 
-                    res.append([begin,stop])
+    i, res = 0, []
+    while i < len(joined):
+        curr_start, curr_end = joined[i][0], joined[i][1]
+
+        if i < len(joined)-1:
+            next_start, next_end = joined[i+1][0], joined[i+1][1]
+        else:
+            next_start, next_end = None, None
+
+        if next_start and curr_end > next_start:
+            res.append([max(curr_start, next_start),min(curr_end,next_end)])
+            i += 2
+        else:
+            res.append(joined[i])
+            i += 1
 
     # convert back to string
     for i in range(len(res)):
@@ -128,12 +140,13 @@ def runTests() -> None:
 
     tests = [
     [[['16:00', '18:00'], ['7:00', '8:30'], ['12:00', '13:00']], ['9:00', '13:00'], [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']], ['13:40', '18:30'], 100],
+    [[], ['10:00', '20:00'], [['13:00', '16:00'], ['18:00', '18:45']], ['9:00', '21:00'], 90],
     [[['16:00', '18:00'], ['7:00', '8:30'], ['12:20', '13:00']], ['9:00', '19:00'], [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']], ['9:00', '18:30'], 30],
     [[['9:00', '12:00']], ['7:00', '23:00'], [['12:30', '13:00']], ['8:00', '23:30'], 60],
     [[], ['10:00', '20:00'], [['13:00', '16:00'], ['18:00', '18:45']], ['9:00', '21:00'], 90]
     ]
 
-    for i in range(2):
+    for i in range(len(tests)):
         input1, act1, input2, act2, duration = tests[i][0], tests[i][1], tests[i][2], tests[i][3], tests[i][4]
         greedy(input1,act1,input2,act2,duration)
 
