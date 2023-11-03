@@ -114,7 +114,7 @@ def greedy(input1: list[list[str, str]], act1: list[str,str], input2: list[list[
                 res.append([max_start,max_end])
                 i += 2
         # check for next range with minumum duration
-        elif shortest <= next_start and start <= shortest <= end and start <= max_start <= end:
+        elif shortest <= next_start and  shortest > curr_bound and start <= shortest <= end and start <= max_start <= end:
             res.append([curr_bound, getMaxEnd(curr_bound, duration, next_start, end)])
             i += 1
         else:
@@ -146,6 +146,10 @@ def runTests() -> None:
     [[['10:12', '11:13'], ['12:19', '12:45'], ['13:39', '13:50'], ['14:14','15:00'] , ['16:12', '17:00'], ['17:53', '18:11'], ['19:23', '19:51']], ['11:18', '20:12'], [['9:22', '9:55'], ['10:12', '12:31'], ['13:40', '14:09'], ['16:00', '16:21']],  ['8:22', '17:56'], 53]
     ]
     for i in range(len(tests)):
+        if i == 0:
+            print("EDGE CASE: NO INPUTS")
+        if i == 1:
+            print("EDGE CASE: DAILY ACTIVITES NOT VALID")
         input1, act1, input2, act2, duration = tests[i][0], tests[i][1], tests[i][2], tests[i][3], tests[i][4]
         greedy(input1,act1,input2,act2,duration)
 
