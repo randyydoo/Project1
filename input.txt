@@ -1,57 +1,68 @@
+EDGE CASE NO INPUTS
 Person 1 Activities: []
 Person 2 Activities: []
 Person 1 Daily Activities: ['10:00', '20:00'] 
 Person 2 Daily Activities: ['9:00', '21:00']
 Duration: 90 minutes
 Interval: ['10:00', '20:00']
+
+EDGE CASE DAILY ACTIVITES DONT MATCH UP
 Person 1 Activities: [['16:00', '18:00'], ['7:00', '8:30'], ['12:00', '13:00']]
 Person 2 Activities: [['9:00', '10:30'], ['16:00', '17:00'], ['12:20', '13:30'], ['14:00', '15:00']]
 Person 1 Daily Activities: ['9:00', '13:00'] 
 Person 2 Daily Activities: ['13:40', '18:30']
 Duration: 100 minutes
 Interval: ['13:40', '13:00']
+
 Person 1 Activities: []
 Person 2 Activities: [['13:00', '16:00'], ['18:00', '18:45']]
 Person 1 Daily Activities: ['10:00', '20:00'] 
 Person 2 Daily Activities: ['9:00', '21:00']
 Duration: 90 minutes
 Interval: ['10:00', '20:00']
+
 Person 1 Activities: [['9:00', '12:00']]
 Person 2 Activities: [['12:30', '13:00']]
 Person 1 Daily Activities: ['7:00', '23:00'] 
 Person 2 Daily Activities: ['8:00', '23:30']
 Duration: 60 minutes
 Interval: ['8:00', '23:00']
+
 Person 1 Activities: []
 Person 2 Activities: [['13:00', '16:00'], ['18:00', '18:45']]
 Person 1 Daily Activities: ['10:00', '20:00'] 
 Person 2 Daily Activities: ['9:00', '21:00']
 Duration: 90 minutes
 Interval: ['10:00', '20:00']
+
 Person 1 Activities: [['10:20', '12:45'], ['0:10', '2:40'], ['3:00', '3:45'], ['6:25', '8:20']]
 Person 2 Activities: [['13:00', '16:00'], ['1:00', '3:45'], ['6:25', '8:20']]
 Person 1 Daily Activities: ['2:00', '20:00'] 
 Person 2 Daily Activities: ['3:00', '21:00']
 Duration: 210 minutes
 Interval: ['3:00', '20:00']
+
 Person 1 Activities: [['1:00', '3:59'], ['4:12', '5:30']]
 Person 2 Activities: [['2:00', '4:01'], ['16:23', '18:53']]
 Person 1 Daily Activities: ['1:32', '5:00'] 
 Person 2 Daily Activities: ['2:30', '5:00']
 Duration: 1 minutes
 Interval: ['2:30', '5:00']
+
 Person 1 Activities: [['12:00', '13:30'], ['14:30', '15:00'], ['3:00', '5:00'], ['8:30', '10:00']]
 Person 2 Activities: [['16:12', '19:00']]
 Person 1 Daily Activities: ['0.00', '23:59'] 
 Person 2 Daily Activities: ['0:00', '23:59']
 Duration: 150 minutes
 Interval: ['0:00', '23:59']
+
 Person 1 Activities: [['11:00', '13:30'], ['20:00', '23:00'], ['7:00', '8:30']]
 Person 2 Activities: [['12:30', '14:45'], ['6:30', '9:00'], ['16:16', '22:00']]
 Person 1 Daily Activities: ['6.00', '17:00'] 
 Person 2 Daily Activities: ['4:00', '16:30']
 Duration: 90 minutes
 Interval: ['6:00', '16:30']
+
 Person 1 Activities: [['10:12', '11:13'], ['12:19', '12:45'], ['13:39', '13:50'], ['14:14', '15:00'], ['16:12', '17:00'], ['17:53', '18:11'], ['19:23', '19:51']]
 Person 2 Activities: [['9:22', '9:55'], ['10:12', '12:31'], ['13:40', '14:09'], ['16:00', '16:21']]
 Person 1 Daily Activities: ['11:18', '20:12'] 
